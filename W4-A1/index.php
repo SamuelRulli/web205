@@ -25,6 +25,8 @@
 			exit();
 		}
 
+		echo "<script>console.log('Connect Successful');</script>";
+
 	?>
 </body>
 </html>

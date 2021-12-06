@@ -1,3 +1,7 @@
+<?php
+	require_once ("bookManager.php");
+?>
+
 <html lang="en">
 
 <head>
@@ -9,57 +13,44 @@
 </head>
 
 <body>
+	<br>
+	<form action="createBooks.php" method="POST" class="form-inline col-lg-6 offset-lg-3">
+		<label class="sr-only" for="titleFormInput">title</label>
+		<input type="text" class="form-control mb-2 mr-sm-2" id="title" name="title" placeholder="Book Title">
+
+		<label class="sr-only" for="subjectFormInput">Subject</label>
+		<input type="text" class="form-control mb-2 mr-sm-2" id="subject" name="subject" placeholder="Subject">
+
+		<label class="sr-only" for="ratingFormInput">Rating</label>
+		<input type="number" class="form-control mb-2 mr-sm-2" id="rating" name="rating" placeholder="Rating">
+
+		<button type="submit" class="btn btn-primary mb-2">Save</button>
+	</form>
+
 	<?php
-		//________ Connect DataBase
-		$userDB    ='root';
-		$passwordDB='mysql';
-		$dataBase  ='web-205';
-		$host      ='localhost';
+ 		$query = new BookManager();
 
-		//$connectDB = new mysqli($host, $userDB, $passwordDB, $dataBase);
+		echo "<table id='web-205' class='table'>";
+    
+		echo "<tr>";
+			echo "<th>Id</th>";
+			echo "<th>Title</th>";
+			echo "<th>Subject</th>";
+			echo "<th>Rating</th>";
+			echo "<th>Action</th>";
+		echo "</tr>";
 
-		$connectDB = mysqli_connect($host, $userDB, $passwordDB, $dataBase);
+		$books = $query->get_books();
 
-		// Check connection
-		echo "<script>console.log( " . mysqli_connect_errno() . ");</script>";
-
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-			exit();
+		foreach ($books as $row) {
+			echo "<tr>";
+				echo "<td>" . $row['id'] . "</td>";
+				echo "<td>" . $row['title'] . "</td>";
+				echo "<td>" . $row['subject'] . "</td>";
+				echo "<td>" . $row['rating'] . "</td>";
+				echo "<td><button class='btn btn-danger mb-2' disabled>Delete</button></td>";
+			echo "</tr>";
 		}
-
-		$sql = "SELECT id, title,subject, rating FROM books";
-
-		if($resultSet = mysqli_query($connectDB, $sql)){
-
-			echo "<table id='web-205' class='table'>";
-
-				echo "<tr>";
-					echo "<th>Id</th>";
-					echo "<th>Title</th>";
-					echo "<th>Subject</th>";
-					echo "<th>Rating</th>";
-				echo "</tr>";
-
-				if(mysqli_num_rows($resultSet) > 0){
-					while($row = mysqli_fetch_array($resultSet)){
-						echo "<tr>";
-							echo "<td>" . $row['id'] . "</td>";
-							echo "<td>" . $row['title'] . "</td>";
-							echo "<td>" . $row['subject'] . "</td>";
-							echo "<td>" . $row['rating'] . "</td>";
-						echo "</tr>";
-					}
-				}else{
-					echo "<td>No books to result list</td>";
-				}
-
-			echo "</table>";
-		}else{
-			echo "<td>No books to result list</td>";
-		}
-
-
 	?>
 </body>
 </html>
