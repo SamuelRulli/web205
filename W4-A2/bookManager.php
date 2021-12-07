@@ -13,8 +13,9 @@
             return $books;
         }
 
-        function create_books($title, $subject , $rating) {
-		    $sql = "INSERT into books (title,subject, rating) values ('$title','$subject', '$rating')";
+        function create_books($data) {
+            
+		    $sql = "INSERT into books (title,subject, rating) values ('$data[title]','$data[subject]', '$data[rating]')";
 
             $instance = new connectionDB();
             $conn = $instance->getConnection();
